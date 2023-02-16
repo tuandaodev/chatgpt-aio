@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ContentComponent } from './content/content.component';
 import { OptionsComponent } from './options/options.component';
 import { PopupComponent } from './popup/popup.component';
 
@@ -11,7 +12,8 @@ import { PopupComponent } from './popup/popup.component';
   declarations: [
     AppComponent,
     PopupComponent,
-    OptionsComponent
+    OptionsComponent,
+    ContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,4 +23,10 @@ import { PopupComponent } from './popup/popup.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+
+export class AppModule {
+  constructor(private injector: Injector) { }
+
+  ngDoBootstrap(): void {
+  }
+}

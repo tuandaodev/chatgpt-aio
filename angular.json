@@ -33,7 +33,9 @@
               "src/assets",
               "src/_locales",
               "src/manifest.json",
-              "src/content-script.js"
+              "src/content-script.js",
+              "src/popup.html",
+              "src/options.html"
             ],
             "styles": [
               "src/styles.scss"

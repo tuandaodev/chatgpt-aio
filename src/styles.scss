@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+
+chatgpt-aio-app-root {
+    margin-bottom: 30px;
+    flex-basis: 0px;
+    flex-grow: 1;
+    z-index: 1;
+}
+
+#typewriter {
+    margin: 0;
+    &:after{
+      content: "|";
+      animation: blink 500ms linear infinite alternate;
+    }
+}
+
+#typewriter.completed {
+  &:after{
+    content: "";
+  }
+}
+
+@-webkit-keyframes blink{
+  0%{opacity: 0;}
+  100%{opacity: 1;}
+}
+
+@-moz-keyframes blink{
+  0%{opacity: 0;}
+  100%{opacity: 1;}
+}
+
+@keyframes blink{
+  0%{opacity: 0;}
+  100%{opacity: 1;}
+}

@@ -28,7 +28,6 @@ export class PopupComponent implements OnInit, AfterViewInit {
 
     console.log('send message to content script: GET_ACCESS_TOKEN');
     
-
     this.chromeService.sendMessage({ 
       type: MessageConstants.GET_ACCESS_TOKEN
      }, (response) => {

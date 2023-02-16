@@ -5,13 +5,16 @@
   "manifest_version": 3,
   "default_locale": "en",
   "host_permissions": ["https://*.openai.com/"],
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
       "matches": [
         "https://www.google.com/search*"
       ],
-      "js": ["content-script.js"]
+      "js": ["content-script.js", "runtime.js", "polyfills.js", "main.js"],
+      "css": ["styles.css"]
     }
   ],
   "icons": {
@@ -21,10 +24,10 @@
     "128": "assets/images/logo-128x128.png"
   },
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html#/popup"
   },
   "options_ui": {
-    "page": "index.html#options",
+    "page": "index.html#/options",
     "open_in_tab": true
   },
   "background": {

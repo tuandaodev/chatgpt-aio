@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { ContentComponent } from './content/content.component';
 import { OptionsComponent } from './options/options.component';
 import { PopupComponent } from './popup/popup.component';
 
 const routes: Routes = [
   {
     path: '',
-      redirectTo: 'popup',
+      redirectTo: 'content',
       pathMatch: 'full',
+  },
+  {
+    path: 'content',
+    component: ContentComponent
   },
   {
     path: 'popup',
@@ -19,8 +24,11 @@ const routes: Routes = [
   },
 ];
 
+const config: ExtraOptions = {
+  useHash: true,
+};
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, config)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
