@@ -5,6 +5,19 @@
     overflow: hidden;
     border-radius: 9px;
     box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+    margin-bottom: 20px;
+}
+
+.google :host {
+    max-width: 450px;
+}
+
+.bing :host {
+    margin: 0 -20px 20px -20px;
+}
+
+.naver :host {
+    margin: 0 30px 20px 16px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +28,7 @@
 
 .chatgpt-aio-header {
     padding: 10px 20px;
+    font-weight: bold;
 }
 
 .chatgpt-aio-body {

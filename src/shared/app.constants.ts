@@ -8,6 +8,8 @@ export class AppConstants {
 // Simple one-time requests
 export class MessageConstants {
   public static readonly GET_ACCESS_TOKEN = 'GET_ACCESS_TOKEN';
+  public static readonly ACCESS_TOKEN_RESPONSE = 'ACCESS_TOKEN_RESPONSE';
+
   public static readonly GET_CONVERSATIONS = 'GET_CONVERSATIONS';
   public static readonly GET_MODELS = 'GET_MODELS';
   public static readonly GENERATE_CONVERSATION = 'GENERATE_CONVERSATION';
@@ -15,6 +17,12 @@ export class MessageConstants {
   public static readonly CONVERSATION_ANSWER_COMPLETED = 'CONVERSATION_ANSWER_COMPLETED';
 
   public static readonly ERROR_RESPONSE = 'ERROR_RESPONSE';
+}
+
+export class ErrorConsts {
+  public static readonly 400 = 'BAD_REQUEST';
+  public static readonly 401 = 'UNAUTHORIZED';
+  public static readonly 403 = 'FORBIDDEN';
 }
 
 export class CacheKeys {

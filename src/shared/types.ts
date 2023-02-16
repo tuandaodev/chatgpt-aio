@@ -17,3 +17,9 @@ export interface UserModel {
     picture: string;
     groups:  any[];
 }
+
+export interface AccessTokenModel {
+    statusCode: number;
+    token?: string;
+    isSuccess: boolean;
+}

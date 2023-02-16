@@ -1,2 +1,19 @@
 <div class="chatgpt-aio-header">ChatGPT</div>
-<div id="typewriter" class="chatgpt-aio-body" [class.completed]="isCompleted" [innerHTML]="answer"></div>
+
+<div class="chatgpt-aio-body">
+
+    <div *ngIf="isError; else answerTemplate">
+        <ng-container [ngSwitch]="errorCode">
+            <span *ngSwitchCase="ErrorConsts[403]">
+                Please log in again at <a href="https://chat.openai.com" target="_blank" rel="noreferrer">chat.openai.com</a>
+            </span>
+            <span *ngSwitchDefault>
+                Please log in at <a href="https://chat.openai.com" target="_blank" rel="noreferrer">chat.openai.com</a>
+            </span>
+        </ng-container>
+    </div>
+
+    <ng-template #answerTemplate>
+        <markdown clipboard id="typewriter" [class.completed]="isCompleted" ngPreserveWhitespaces [data]="answer"></markdown>
+    </ng-template>
+</div>

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ErrorConsts } from './app.constants';
 
 export class ChatService {
 
@@ -25,10 +26,11 @@ export class ChatService {
         return fetch(url);
     }
 
-    public generateConversation(prompt: string, model: string) {
+    public generateConversation(prompt: string, model: string, signal: AbortSignal) {
         const url = `${this._apiUrl}/backend-api/conversation`;
         return fetch(url, {
             method: "POST",
+            signal: signal,
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${this._token}`,
@@ -74,7 +76,15 @@ export class ChatService {
 
     public async getAccessToken(): Promise<string> {
         const res = await this.getAuthSession();
+        if (res.status === 403) {
+            throw new Error(ErrorConsts[403]);
+        }
+
         const json = await res.json();
+        if (!json?.accessToken) {
+            throw new Error(ErrorConsts[401]);
+        }
+
         return json.accessToken;
     }
 }

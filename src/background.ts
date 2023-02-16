@@ -28,9 +28,9 @@ export function getModelName(): string {
   return 'text-davinci-002-render';
 }
 
-export async function generateConversation(prompt: string, token: string, model: string, port: chrome.runtime.Port): Promise<string> {
+export async function generateConversation(prompt: string, token: string, model: string, port: chrome.runtime.Port, signal: AbortSignal): Promise<string> {
   chatService.setToken(token);
-  const response = await chatService.generateConversation(prompt, model);
+  const response = await chatService.generateConversation(prompt, model, signal);
   if (response.body == null) return '';
 
   const reader = response.body.getReader();
@@ -41,26 +41,31 @@ export async function generateConversation(prompt: string, token: string, model:
     parseAndSendConversationText(text, port);
     result = await reader.read();
   }
-  return decoder.decode(result.value);
+
+  result = await reader.read();
+  const lastDecode = decoder.decode(result.value);
+  console.log('done reading response', lastDecode);
+  return lastDecode;
 }
 
 export function parseAndSendConversationText(text: string, port: chrome.runtime.Port) {
+  
   let trimText = text.trim();
+  if (!trimText) return;
+
   try {
     if (trimText.startsWith("data: ")) {
-      trimText = trimText.substring(6);
+      const parts = trimText.split("data: ");
+      trimText = parts.at(-1) ?? '';
     }
-
-    if (trimText.includes("[DONE]")) {
-      console.error(`xxx${trimText}xxx`, trimText === "[DONE]", "fuck");
-    }
-
+    
     let answerRes: AIOMessageModel;
     if (trimText == "[DONE]") {
       answerRes = {
         type: MessageConstants.CONVERSATION_ANSWER_COMPLETED,
         data: {}
       }
+      
       port.postMessage(answerRes);
       return;
     }
@@ -85,26 +90,30 @@ export function parseAndSendConversationText(text: string, port: chrome.runtime.
     }
     port.postMessage(answerRes);
   } catch (e) {
-    console.error('error parsing json', trimText, e);
+    console.error('error parsing json', `xxx${trimText}xxx`, e);
   }
 }
 
 console.log('background js loaded');
-
 chrome.runtime.onConnect.addListener(function(port: chrome.runtime.Port) {
-  console.log('background port', port);
+  // Create an instance of AbortController
+  const controller = new AbortController();
+  const signal = controller.signal;
+
   if (port.name === AppConstants.PORT_CHANNEL) {
     port.onMessage.addListener(function(msg: AIOMessageModel) {
       console.log('background receivea message', msg);
 
       if (msg.type === MessageConstants.GENERATE_CONVERSATION) {
         console.log('received message data', msg.data);
-        generateConversation(msg.data.prompt, msg.data.token, msg.data.model, port).then(res => {
-          console.log('generate conversation res', res);
+        generateConversation(msg.data.prompt, msg.data.token, msg.data.model, port, signal).then(res => {
           parseAndSendConversationText(res, port);
         });
       }
-
+    });
+    port.onDisconnect.addListener(() => {
+      console.log('port disconnected');
+      controller.abort();
     });
   }
 });
@@ -112,8 +121,22 @@ chrome.runtime.onConnect.addListener(function(port: chrome.runtime.Port) {
 chrome.runtime.onMessage.addListener((message: AIOMessageModel, sender, sendResponse) => {
   if (message.type === MessageConstants.GET_ACCESS_TOKEN) {
     getAccessToken().then(res => {
-      sendResponse({ token: res });
+      sendResponse({
+        type: MessageConstants.ACCESS_TOKEN_RESPONSE,
+        data: {
+          token: res
+        }
+      });
+    }).catch((err: Error) => {
+      sendResponse({ 
+        type: MessageConstants.ERROR_RESPONSE,
+        data: {
+          error: err.message,
+        }
+      });
+      console.log('error getting access token', err);
     });
+    
     return true; // Inform Chrome that we will make a delayed sendResponse
   }
 

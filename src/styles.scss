@@ -5,6 +5,26 @@ chatgpt-aio-app-root {
     flex-basis: 0px;
     flex-grow: 1;
     z-index: 1;
+
+
+    @media (prefers-color-scheme: dark) {
+      .chatgpt-aio-header {
+        color: #fff;
+      }
+      p {
+        color: #fff;
+      }
+    }
+    
+    @media (prefers-color-scheme: light) {
+      .chatgpt-aio-header {
+        color: #000;
+      }
+      p {
+        color: #000;
+      }
+    }
+    
 }
 
 #typewriter {
@@ -12,6 +32,10 @@ chatgpt-aio-app-root {
     &:after{
       content: "|";
       animation: blink 500ms linear infinite alternate;
+    }
+
+    :first-child {
+      margin-top: 0;
     }
 }
 
@@ -34,4 +58,29 @@ chatgpt-aio-app-root {
 @keyframes blink{
   0%{opacity: 0;}
   100%{opacity: 1;}
+}
+
+.markdown-clipboard-button {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 4px 0;
+  width: 50px;
+  transition: all 250ms ease-out;
+}
+
+.markdown-clipboard-button:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.markdown-clipboard-button:active {
+  transform: scale(0.95);
+}
+
+.markdown-clipboard-button.copied {
+  background-color: rgba(0, 255, 0, 0.1);
+  color: #00ff00;
 }

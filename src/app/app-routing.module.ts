@@ -5,13 +5,13 @@ import { OptionsComponent } from './options/options.component';
 import { PopupComponent } from './popup/popup.component';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //     redirectTo: 'content',
+  //     pathMatch: 'full',
+  // },
   {
     path: '',
-      redirectTo: 'content',
-      pathMatch: 'full',
-  },
-  {
-    path: 'content',
     component: ContentComponent
   },
   {
