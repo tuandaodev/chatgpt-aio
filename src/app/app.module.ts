@@ -8,6 +8,11 @@ import { AppComponent } from './app.component';
 import { ContentComponent } from './content/content.component';
 import { OptionsComponent } from './options/options.component';
 import { PopupComponent } from './popup/popup.component';
+import { MaterialModule } from './material/material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -20,6 +25,8 @@ import { PopupComponent } from './popup/popup.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
     MarkdownModule.forRoot({
       clipboardOptions: {
         provide: ClipboardOptions,
@@ -28,6 +35,8 @@ import { PopupComponent } from './popup/popup.component';
         },
       },
     }),
+    MaterialModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

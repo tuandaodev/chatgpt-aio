@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AppConstants, ErrorConsts, MessageConstants } from '@shared/app.constants';
+import { AppConstants, ErrorConsts, MessageConstants, TRIGGER_MODES } from '@shared/app.constants';
 import { ChromeService } from '@shared/chrome.service';
 import { SearchEngineProvider } from '@shared/search-engine.provider';
+import { SettingService } from '@shared/setting.service';
 import { AIOMessageModel } from '@shared/types';
 import { MarkdownService } from 'ngx-markdown';
 
@@ -26,7 +27,8 @@ export class ContentComponent implements OnInit {
     private chromeService: ChromeService,
     private cdr: ChangeDetectorRef,
     private markdownService: MarkdownService,
-    private searchEngineProvider: SearchEngineProvider
+    private searchEngineProvider: SearchEngineProvider,
+    private settingService: SettingService
   ) {
   }
 
@@ -35,9 +37,16 @@ export class ContentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const mode = this.settingService.getTriggerMode();
+    console.log(mode);
+    if (mode == TRIGGER_MODES.AUTO) {
+      this.trigger();
+    }
+  }
+
+  private trigger() {
     this.port = chrome.runtime.connect({name: AppConstants.PORT_CHANNEL});
     const prompt = this.getPrompt();
-    console.log('prompt', prompt);
     this.handleMessages(prompt);
   }
 
@@ -47,16 +56,9 @@ export class ContentComponent implements OnInit {
         return searchEngine.getPrompt();
 
     return null;
-
-    // const queryString = window.location.search;
-    // const urlParams = new URLSearchParams(queryString);
-    // const prompt = urlParams.get('q');
-    // console.log('prompt', prompt);
-    // return prompt;
   }
 
   private setAnswerModel = (res: AIOMessageModel) => {
-    // console.log('set Answer Model', res);
     if (res?.type === MessageConstants.CONVERSATION_ANSWER) {
       this.setAnswer(res?.data?.text);
     } else if (res?.type === MessageConstants.ERROR_RESPONSE) {
@@ -75,7 +77,6 @@ export class ContentComponent implements OnInit {
   }
 
   private callback = (tokenRes: AIOMessageModel, prompt: string) => {
-    console.log("response to content script TOKEN", tokenRes);
       if (tokenRes?.data?.token) {
         const request: AIOMessageModel = { 
           type: MessageConstants.GENERATE_CONVERSATION,

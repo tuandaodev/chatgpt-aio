@@ -1,1 +1,31 @@
-<p>options works!</p>
+<section fxLayout="column" class="container" fxLayoutAlign="center center">
+    <div fxFlexAlign="center">
+        <p>ChatGPT - All in One</p>
+    </div>
+    <!-- <p>In this application we are going to work with:</p> -->
+
+
+    <h2>Settings</h2>
+    <form fxLayout="column" method="POST" [formGroup]="formGroup">
+        
+        <div>
+            <label id="example-radio-group-label">Trigger mode</label>
+            <mat-radio-group aria-labelledby="example-radio-group-label"
+            class="example-radio-group" formControlName="triggerMode">
+                <mat-radio-button class="example-radio-button" *ngFor="let item of triggerModes" [value]="item.value">
+                    {{ item.name }}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <mat-form-field class="mt-20" *ngIf="f?.triggerMode?.value == TRIGGER_MODES.CONTAINS">
+            <mat-label>Include contains</mat-label>
+            <input matInput formControlName="triggerContainers">
+            <mat-hint>Enter your words to trigger ChatGPT when prompt includes them. Split by ",". Default: "?"</mat-hint>
+        </mat-form-field>
+
+        <button class="mt-20" type="button" mat-raised-button color="primary" (click)="onSubmit()">Save</button>
+
+    </form>
+
+</section>

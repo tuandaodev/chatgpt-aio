@@ -27,4 +27,11 @@ export class ErrorConsts {
 
 export class CacheKeys {
     public static readonly ACCESS_TOKEN = 'ACCESS_TOKEN';
+    public static readonly SETTINGS = 'CHATGPT_AIO_SETTINGS';
+}
+
+export class TRIGGER_MODES {
+  public static readonly AUTO = "AUTO";
+  public static readonly MANUAL = "MANUAL";
+  public static readonly CONTAINS = "CONTAINS";
 }

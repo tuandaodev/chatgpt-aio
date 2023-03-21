@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MessageConstants } from '@shared/app.constants';
-import { AppService } from 'src/shared/app.service';
 import { ChromeService } from 'src/shared/chrome.service';
 
 @Component({
@@ -13,7 +12,6 @@ export class PopupComponent implements OnInit, AfterViewInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private appService: AppService,
     private chromeService: ChromeService
     ) { }
 
